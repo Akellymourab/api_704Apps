@@ -3,28 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cars;
+use App\Services\Car\CarService;
 use Illuminate\Http\Request;
 use App\Http\Validates\Car\CarValidate;
-use App\Services\Image\ImageService;
+
 
 class CarsController extends Controller
 {
     private Cars $model;
     private $validate;
-    private ImageService $imageService;
+    private CarService $service;
+
 
     /**
-     * Undocumented function
-     *
      * @param Cars $carsModel
      * @param CarValidate $CarValidate
-     * @param ImageService $imageService
+     * @param CarService $carService
      */
-    public function __construct(Cars $carsModel, CarValidate $CarValidate, ImageService $imageService)
+    public function __construct(Cars $carsModel, CarValidate $CarValidate, CarService $carService)
     {
         $this->model = $carsModel;
         $this->validate = $CarValidate;
-        $this->imageService = $imageService;    
+        $this->service = $carService;
     }
 
     /**
@@ -32,7 +32,11 @@ class CarsController extends Controller
      */
     public function index()
     {
-        //
+        $cars = $this->service->list();
+        return response()->json([
+            'status' => true,
+            'response' => $cars,
+        ], 201);
     }
 
     /**
@@ -44,14 +48,16 @@ class CarsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function store(Request $request)
     {
         $this->validate::create($request);
-        dd($request->all());
+
         try {
-            $cars = $this->model::create($request->all());
+            $car = $this->service->manage($request->all(), 'create');
         }catch (\Exception $exception)
         {
             return response()->json([
@@ -62,7 +68,7 @@ class CarsController extends Controller
 
         return response()->json([
             'status' => true,
-            'response' => $cars,
+            'response' => $car,
         ], 201);
     }
 
@@ -87,7 +93,23 @@ class CarsController extends Controller
      */
     public function update(Request $request, Cars $cars)
     {
-        //
+
+        $this->validate::update($request);
+
+        try {
+            $car = $this->service->manage($request->all(), 'update');
+        }catch (\Exception $exception)
+        {
+            return response()->json([
+                'response' => $exception->getMessage(),
+            ], 400);
+        }
+
+
+        return response()->json([
+            'status' => true,
+            'response' => $car,
+        ], 201);
     }
 
     /**
@@ -95,6 +117,17 @@ class CarsController extends Controller
      */
     public function destroy(Cars $cars)
     {
-        //
+        try{
+            $car = $this->model::destroy($cars);
+        }catch (\Exception $exception)
+        {
+            return response()->json([
+                'response' => $exception->getMessage(),
+            ], 400);
+        }
+
+        return response()->json([
+            'response' => $car,
+        ], 200);
     }
 }

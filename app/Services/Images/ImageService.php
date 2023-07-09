@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Image;
+namespace App\Services\Images;
 
 use App\Models\images;
 use Illuminate\Support\Facades\Storage;
@@ -13,22 +13,26 @@ class ImageService {
     {
         $this->model = $images;
     }
-    
+
+    /**
+     * @param array $params
+     * @return false|string
+     */
     public function create(array $params)
     {
         try{
             if(!empty($params['image']))
             {
-                $image = Storage::disk('public')->putFile($params['path'], $params['image']);
-                $this->model::create([
-                    'path'=>$image
+                $imagePath = Storage::disk('public')->putFile($params['path'], $params['image']);
+                $image = $this->model::create([
+                    'path' => $imagePath
                 ]);
             }
+
         }catch(\Exception $exception){
             return $exception->getMessage();
         }
-        return $image;
-        
 
+        return $image;
     }
 };

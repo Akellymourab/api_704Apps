@@ -9,8 +9,8 @@ class CarValidate{
             'model' => 'required',
             'color' => 'required',
             'license_plate' => 'required|unique:cars',
-            'nvi' => 'required|inique:cars',
-            'image' => 'sometimes',
+            'nvi' => 'required|unique:cars',
+            'image_id' => 'sometimes',
         ]);
     }
 
@@ -21,8 +21,8 @@ class CarValidate{
             'model' => 'required',
             'color' => 'required',
             'license_plate' => 'required|unique:cars',
-            'nvi' => 'required|inique:cars',
-            'image' => 'sometimes',
+            'nvi' => 'required|unique:cars',
+            'image_id' => 'sometimes',
         ]);
     }
 

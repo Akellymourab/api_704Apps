@@ -16,7 +16,7 @@ class Cars extends Model
         "color",
         "license_plate",
         "nvi",
-        "image"
+        "image_id"
     ];
     
     public function image()
