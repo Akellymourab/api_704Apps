@@ -25,7 +25,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('cars');
             
-            $table->unsignedBigInteger('profile_image_id');
+            $table->unsignedBigInteger('profile_image_id')->nullable();
                 $table->foreign('profile_image_id')
                 ->references('id')
                 ->on('images');

@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\CarsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DriversController;
-
+use App\Http\Controllers\ImagesController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('driver',DriversController::class);
+Route::resource('car',CarsController::class);
+route::resource('image', ImagesController::class);
+Route::resource('user',UsersController::class);

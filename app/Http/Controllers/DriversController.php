@@ -84,9 +84,24 @@ class DriversController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Drivers $drivers)
+    public function update(Request $request)
     {
-        //
+        $this->validate::update($request);
+
+        try {
+            $driver = $this->model::update($request->all());
+        }catch (\Exception $exception)
+        {
+            return response()->json([
+                'response' => $exception->getMessage(),
+            ], 400);
+        }
+
+
+        return response()->json([
+            'status' => true,
+            'response' => $driver,
+        ], 201);
     }
 
     /**
@@ -94,6 +109,21 @@ class DriversController extends Controller
      */
     public function destroy(Drivers $drivers)
     {
-        //
+        $this->validate::destroy($drivers);
+
+        try {
+            $driver = $this->model::destroy($drivers->all());
+        }catch (\Exception $exception)
+        {
+            return response()->json([
+                'response' => $exception->getMessage(),
+            ], 400);
+        }
+
+
+        return response()->json([
+            'status' => true,
+            'response' => $driver,
+        ], 201);
     }
 }

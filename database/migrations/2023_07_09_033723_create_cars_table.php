@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('license_plate')->unique();
             $table->string('nvi')->unique();
 
-            $table->unsignedBigInteger('image_id');
+            $table->unsignedBigInteger('image_id')->nullable();
             $table->foreign('image_id')
                 ->references('id')
                 ->on('images');
