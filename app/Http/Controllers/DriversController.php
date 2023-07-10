@@ -3,33 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\Drivers;
-use Illuminate\Http\Request;
 use App\Http\Validates\Driver\DriverValidate;
-
+use App\Services\Drivers\DriverService;
+use Illuminate\Http\Request;
 
 class DriversController extends Controller
 {
 
     private Drivers $model;
-    private $validate;
+    private DriverValidate $validate;
+    private DriverService $service;
 
     /**
      * Undocumented function
      *
      * @param Drivers $driverModel
      * @param DriverValidate $driverValidate
+     * @param DriverService $driverService
      */
-    public function __construct(Drivers $driverModel, DriverValidate $driverValidate)
+    public function __construct(Drivers $driverModel, DriverValidate $driverValidate, DriverService $driverService)
     {
         $this->model = $driverModel;
         $this->validate = $driverValidate;
+        $this->service = $driverService;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $drivers = $this->service->list();
+        return response()->json([
+            'status' => true,
+            'response' => $drivers,
+        ], 201);
     }
 
     /**
@@ -49,7 +56,7 @@ class DriversController extends Controller
         $this->validate::create($request);
 
         try {
-            $driver = $this->model::create($request->all());
+            $drivers = $this->service->manage($request->all(), 'create');
         }catch (\Exception $exception)
         {
             return response()->json([
@@ -60,7 +67,7 @@ class DriversController extends Controller
 
         return response()->json([
             'status' => true,
-            'response' => $driver,
+            'response' => $drivers,
         ], 201);
     
     }
@@ -89,7 +96,7 @@ class DriversController extends Controller
         $this->validate::update($request);
 
         try {
-            $driver = $this->model::update($request->all());
+            $drivers = $this->service->manage($request->all(), 'update');
         }catch (\Exception $exception)
         {
             return response()->json([
@@ -100,7 +107,7 @@ class DriversController extends Controller
 
         return response()->json([
             'status' => true,
-            'response' => $driver,
+            'response' => $drivers,
         ], 201);
     }
 
@@ -109,10 +116,8 @@ class DriversController extends Controller
      */
     public function destroy(Drivers $drivers)
     {
-        $this->validate::destroy($drivers);
-
-        try {
-            $driver = $this->model::destroy($drivers->all());
+        try{
+            $drivers = $this->model::destroy($drivers);
         }catch (\Exception $exception)
         {
             return response()->json([
@@ -120,10 +125,8 @@ class DriversController extends Controller
             ], 400);
         }
 
-
         return response()->json([
-            'status' => true,
-            'response' => $driver,
-        ], 201);
+            'response' => $drivers,
+        ], 200);
     }
 }

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cars;
-use App\Services\Car\CarService;
-use Illuminate\Http\Request;
 use App\Http\Validates\Car\CarValidate;
+use App\Services\Cars\CarService;
+use Illuminate\Http\Request;
+
 
 
 class CarsController extends Controller
@@ -91,7 +92,7 @@ class CarsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cars $cars)
+    public function update(Request $request)
     {
 
         $this->validate::update($request);

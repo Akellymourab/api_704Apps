@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Car;
+namespace App\Services\Cars;
 
 use App\Models\Cars;
 use App\Services\Images\ImageService;
