@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\User;
+namespace App\Services\User;
 
-use App\Models\User\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -62,5 +62,6 @@ class UserService
     {
         return $this->user->get();
     }
+
 
 }
