@@ -5,7 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DriversController;
 use App\Http\Controllers\ImagesController;
-use App\Http\Controllers\UsersController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
 Route::resource('driver',DriversController::class);
 Route::resource('car',CarsController::class);
-route::resource('image', ImagesController::class);
-Route::resource('user',UsersController::class);
+Route::resource('image', ImagesController::class);
+
+Route::group(['prefix' => 'auth'], function () {
+    Route::group(['as' => 'auth'], function () {
+        Route::post('register',[LoginController::class, 'register']);
+        Route::post('login',[LoginController::class, 'login']);
+    });
+});
