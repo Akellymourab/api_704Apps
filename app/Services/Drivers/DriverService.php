@@ -34,7 +34,8 @@ class DriverService
 
    
 
-    public function manage(array $request, $status = 'create')
+    public function manage(array $request , string $data, array $action, $status = 'create')
+
     {
         try{
 
@@ -73,7 +74,33 @@ class DriverService
 
         return $drivers;
 
+        if ($action === 'create') {
+            $driver = $this->model->create($data);
+            $car = $driver->car()->create($carData);
+
+        } elseif ($action === 'update') {
+            $driver = $this->model->findOrFail($data['id']);
+            $driver->update($data);
+            $car = $driver->car;
+            $car->update($carData);
+        }
+
+        // ...
+
+        return compact('driver', 'car');
     }
+
+
+    public function search(string $keyword)
+    {
+        return $this->model->where('name', 'like', "%{$keyword}%")
+            ->orWhere('cpf', 'like', "%{$keyword}%")
+            ->orWhereHas('car', function ($query) use ($keyword) {
+                $query->where('license_plate', 'like', "%{$keyword}%");
+            })->get();
+            
+    }
+
 
     public function list()
     {
