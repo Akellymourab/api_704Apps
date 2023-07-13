@@ -18,11 +18,8 @@ class DriverValidate{
     
     public static function update($request){
         $request->validate([
-            'id' => 'required|exist:drivers,id',
             'name' => 'required',
-            'cpf' => 'required|unique:drivers',
-            'cnh' => 'required|unique:drivers',
-            'email' => 'required|unique:drivers',
+            'email' => 'required',
             'phone' => 'required',
             'address' => 'required',
             'car_id' => 'required',

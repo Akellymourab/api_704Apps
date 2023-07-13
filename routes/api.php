@@ -37,6 +37,8 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::resource('driver',DriversController::class);
+    Route::post('driver/{id}',[DriversController::class, 'update']);
+
     Route::resource('car',CarsController::class);
     Route::resource('image', ImagesController::class);
 });

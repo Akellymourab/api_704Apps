@@ -34,15 +34,17 @@ class DriverService
 
    
 
-    public function manage(array $request, $status = 'create')
+    public function manage(array $request, $status = 'create', $id = null)
     {
         try{
 
-            if($status == 'create')
+            if($status == 'create'){
                 $drivers = $this->model::create($request);
+            }    
 
-            if($status == 'update')
-                $drivers = $this->model::where('id','=', $request['id'])->update($request);
+            if(!is_null($id) && $status === 'update'){
+                $drivers = $this->model::where('id','=', $id)->update($request);
+            }
 
             if(!empty($request['image'])){
 
@@ -77,8 +79,7 @@ class DriverService
 
     public function list()
     {
-        return $this->model::with('profile')->get();
-        return $this->model::with('car')->get();
+        return $this->model::with(['profile','car'])->get();
     } 
 
 }

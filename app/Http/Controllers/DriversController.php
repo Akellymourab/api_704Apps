@@ -91,12 +91,12 @@ class DriversController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, int $id)
     {
         $this->validate::update($request);
 
         try {
-            $drivers = $this->service->manage($request->all(), 'update');
+            $drivers = $this->service->manage($request->only('name', 'email', 'phone', 'address', 'car_id', 'profile_image_id'), 'update', $id);
         }catch (\Exception $exception)
         {
             return response()->json([
@@ -108,7 +108,7 @@ class DriversController extends Controller
         return response()->json([
             'status' => true,
             'response' => $drivers,
-        ], 201);
+        ], 200);
     }
 
     /**
