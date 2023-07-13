@@ -25,10 +25,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('login', [LoginController::class, 'login'])->name('login');
 
+
 Route::group(['prefix' => 'auth'], function () {
     Route::group(['as' => 'auth'], function () {
         Route::post('register', [LoginController::class, 'register']);
         Route::post('login', [LoginController::class, 'login']);
+        
     });
 });
 
@@ -38,3 +40,6 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::resource('car',CarsController::class);
     Route::resource('image', ImagesController::class);
 });
+
+//Route::patch('driver', [DriversController::class, 'update']);
+//Route::patch('car', [DriversController::class, 'update']);

@@ -56,7 +56,7 @@ class DriversController extends Controller
         $this->validate::create($request);
 
         try {
-            $drivers = $this->service->manage($request->all(), 'create', $request->only('brand', 'model', 'license_plate', 'nvi'));
+            $drivers = $this->service->manage($request->all(), 'create');
         }catch (\Exception $exception)
         {
             return response()->json([
@@ -96,7 +96,7 @@ class DriversController extends Controller
         $this->validate::update($request);
 
         try {
-            $drivers = $this->service->manage($request->all(), 'update', $request->only('brand', 'model', 'license_plate', 'nvi'));
+            $drivers = $this->service->manage($request->all(), 'update');
         }catch (\Exception $exception)
         {
             return response()->json([
