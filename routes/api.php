@@ -43,5 +43,3 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::resource('image', ImagesController::class);
 });
 
-//Route::patch('driver', [DriversController::class, 'update']);
-//Route::patch('car', [DriversController::class, 'update']);
